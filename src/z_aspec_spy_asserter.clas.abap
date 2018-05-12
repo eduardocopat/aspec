@@ -11,6 +11,7 @@ CLASS z_aspec_spy_asserter DEFINITION
       expected              TYPE REF TO data,
       assert_equals_called  TYPE abap_bool,
       assert_true_called    TYPE abap_bool,
+      assert_false_called    TYPE abap_bool,
       assert_differs_called TYPE abap_bool.
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -53,6 +54,71 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
     CREATE DATA me->expected LIKE expected.
     ASSIGN me->expected->* TO FIELD-SYMBOL(<expected>).
     <expected> = expected.
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~abort.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_bound.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_char_cp.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_char_np.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_equals_float.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_false.
+    assert_false_called = abap_true.
+    save_actual( act ).
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_initial.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_not_bound.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_not_initial.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_number_between.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_subrc.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_table_contains.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_table_not_contains.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_text_matches.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~assert_that.
+
+  ENDMETHOD.
+
+  METHOD z_aspec_xunit_assert~fail.
+
   ENDMETHOD.
 
 ENDCLASS.

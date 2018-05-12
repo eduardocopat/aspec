@@ -4,10 +4,14 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
   PRIVATE SECTION.
     DATA: spy_asserter TYPE REF TO z_aspec_spy_asserter.
     METHODS:
-      should_match_equality     FOR TESTING RAISING cx_static_check,
-      should_match_truthiness   FOR TESTING RAISING cx_static_check,
-      should_match_contains     FOR TESTING RAISING cx_static_check,
-      should_not_match_equality FOR TESTING RAISING cx_static_check,
+      should_match_equality       FOR TESTING RAISING cx_static_check,
+      should_not_match_equality   FOR TESTING RAISING cx_static_check,
+      should_match_truthiness     FOR TESTING RAISING cx_static_check,
+      should_not_match_truthiness FOR TESTING RAISING cx_static_check,
+      should_match_falsiness      FOR TESTING RAISING cx_static_check,
+      should_not_match_falsiness  FOR TESTING RAISING cx_static_check,
+      should_match_contains       FOR TESTING RAISING cx_static_check,
+
       setup,
       should_assert_equals,
       actual_should_be
@@ -17,7 +21,8 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
         IMPORTING
           expected TYPE any,
       should_assert_true,
-      should_assert_differs.
+      should_assert_differs,
+      should_assert_false.
 ENDCLASS.
 CLASS lcl_aspec IMPLEMENTATION.
   METHOD setup.
@@ -47,8 +52,32 @@ CLASS lcl_aspec IMPLEMENTATION.
     actual_should_be( abap_true ).
   ENDMETHOD.
 
-  METHOD should_match_contains.
+  METHOD should_not_match_truthiness.
+    z_aspec=>expect( abap_true )->not( )->to_be_true( ).
 
+    should_assert_false( ).
+    actual_should_be( abap_true ).
+  ENDMETHOD.
+
+  METHOD should_match_falsiness.
+    z_aspec=>expect( abap_false )->to_be_false( ).
+
+    should_assert_false( ).
+    actual_should_be( abap_false ).
+  ENDMETHOD.
+
+  METHOD should_not_match_falsiness.
+    z_aspec=>expect( abap_false )->not( )->to_be_false( ).
+
+    should_assert_true( ).
+    actual_should_be( abap_false ).
+  ENDMETHOD.
+
+  METHOD should_match_contains.
+    z_aspec=>expect( abap_false )->not( )->to_be_false( ).
+
+    should_assert_true( ).
+    actual_should_be( abap_false ).
   ENDMETHOD.
 
   METHOD should_assert_equals.
@@ -77,5 +106,10 @@ CLASS lcl_aspec IMPLEMENTATION.
   METHOD should_assert_differs.
     cl_abap_unit_assert=>assert_true( spy_asserter->assert_differs_called ).
   ENDMETHOD.
+
+  METHOD should_assert_false.
+    cl_abap_unit_assert=>assert_true( spy_asserter->assert_false_called ).
+  ENDMETHOD.
+
 
 ENDCLASS.

@@ -7,7 +7,7 @@ CLASS z_aspec DEFINITION
       IMPORTING
         actual        TYPE any
       RETURNING
-        VALUE(return) TYPE REF TO z_aspec_matcher.
+        VALUE(return) TYPE REF TO z_aspec_expectant.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -17,7 +17,7 @@ ENDCLASS.
 CLASS z_aspec IMPLEMENTATION.
 
   METHOD expect.
-    return = NEW z_aspec_matcher( actual ).
+    return = NEW z_aspec_expectant( actual ).
   ENDMETHOD.
 
 ENDCLASS.

@@ -1,4 +1,4 @@
-CLASS z_aspec_matcher DEFINITION
+CLASS z_aspec_expectant DEFINITION
   PUBLIC
   FINAL
   CREATE PUBLIC .
@@ -12,18 +12,25 @@ CLASS z_aspec_matcher DEFINITION
       IMPORTING
         expected TYPE any.
     METHODS to_be_true.
+    METHODS to_be_false.
     METHODS not
       RETURNING
-        VALUE(return) TYPE REF TO z_aspec_matcher.
+        VALUE(return) TYPE REF TO z_aspec_expectant.
   PROTECTED SECTION.
   PRIVATE SECTION.
     DATA actual TYPE REF TO data.
     DATA negative TYPE abap_bool.
+    METHODS flip_boolean
+      IMPORTING
+        boolean       TYPE abap_bool
+      RETURNING
+        VALUE(return) TYPE abap_bool.
+
 ENDCLASS.
 
 
 
-CLASS z_aspec_matcher IMPLEMENTATION.
+CLASS z_aspec_expectant IMPLEMENTATION.
   METHOD constructor.
     CREATE DATA me->actual LIKE actual.
     ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
@@ -32,10 +39,12 @@ CLASS z_aspec_matcher IMPLEMENTATION.
     negative = negating.
   ENDMETHOD.
 
-  METHOD to_be_true.
+  METHOD not.
     ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
 
-    z_aspec_xunit=>asserter->assert_true( <actual> ).
+    return = NEW z_aspec_expectant(
+        actual   = <actual>
+        negating = abap_true ).
   ENDMETHOD.
 
   METHOD to_equal.
@@ -46,11 +55,20 @@ CLASS z_aspec_matcher IMPLEMENTATION.
       expected = expected ).
   ENDMETHOD.
 
-  METHOD not.
+  METHOD to_be_true.
     ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
 
-    return = NEW z_aspec_matcher(
-        actual   = <actual>
-        negating = abap_true ).
+    NEW z_aspec_boolean_matcher( negative )->match( <actual> ).
   ENDMETHOD.
+
+  METHOD to_be_false.
+    ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
+
+    NEW z_aspec_boolean_matcher( flip_boolean( negative ) )->match( <actual> ).
+  ENDMETHOD.
+
+  METHOD flip_boolean.
+    return = boolc( boolean <> abap_true ).
+  ENDMETHOD.
+
 ENDCLASS.
