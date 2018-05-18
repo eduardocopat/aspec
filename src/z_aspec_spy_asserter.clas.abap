@@ -1,7 +1,7 @@
 CLASS z_aspec_spy_asserter DEFINITION
   PUBLIC
   FINAL
-  CREATE PUBLIC .
+  CREATE PUBLIC FOR TESTING.
 
   PUBLIC SECTION.
     INTERFACES:
@@ -9,18 +9,29 @@ CLASS z_aspec_spy_asserter DEFINITION
     CLASS-DATA:
       actual                TYPE REF TO data,
       expected              TYPE REF TO data,
+      line                  TYPE REF TO data,
+      table                 TYPE REF TO data,
       assert_equals_called  TYPE abap_bool,
       assert_true_called    TYPE abap_bool,
-      assert_false_called    TYPE abap_bool,
-      assert_differs_called TYPE abap_bool.
+      assert_false_called   TYPE abap_bool,
+      assert_differs_called TYPE abap_bool,
+      assert_table_contains TYPE abap_bool.
+
   PROTECTED SECTION.
   PRIVATE SECTION.
+
     METHODS save_actual
       IMPORTING
         actual TYPE any.
     METHODS save_expected
       IMPORTING
         expected TYPE any.
+    METHODS save_line
+      IMPORTING
+        line TYPE any.
+    METHODS save_table
+      IMPORTING
+        table TYPE ANY TABLE.
 
 ENDCLASS.
 
@@ -102,7 +113,10 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_table_contains.
+    assert_table_contains = abap_true.
 
+    save_line( line ).
+    save_table( table ).
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_table_not_contains.
@@ -118,6 +132,24 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~fail.
+
+  ENDMETHOD.
+
+
+  METHOD save_line.
+
+    CREATE DATA me->line LIKE line.
+    ASSIGN me->line->* TO FIELD-SYMBOL(<line>).
+    <line> = line.
+
+  ENDMETHOD.
+
+
+  METHOD save_table.
+
+    CREATE DATA me->table LIKE table.
+    ASSIGN me->table->* TO FIELD-SYMBOL(<table>).
+    <table> = table.
 
   ENDMETHOD.
 
