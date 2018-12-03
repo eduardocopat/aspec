@@ -19,4 +19,8 @@ CLASS z_aspec_aunit_asserter IMPLEMENTATION.
       exp = exp ).
   ENDMETHOD.
 
+  METHOD z_aspec_xunit_assert~assert_table_contains.
+
+  ENDMETHOD.
+
 ENDCLASS.

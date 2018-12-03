@@ -6,6 +6,7 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
   PRIVATE SECTION.
 
     METHODS:
+      setup,
       should_match_equality       FOR TESTING RAISING cx_static_check,
       should_match_not_equality   FOR TESTING RAISING cx_static_check,
       should_match_truthiness     FOR TESTING RAISING cx_static_check,
@@ -13,8 +14,7 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
       should_match_falsiness      FOR TESTING RAISING cx_static_check,
       should_match_not_falsiness  FOR TESTING RAISING cx_static_check,
       should_match_contains       FOR TESTING RAISING cx_static_check,
-
-      setup.
+      should_match_table_equality FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 CLASS lcl_aspec IMPLEMENTATION.
   METHOD setup.
@@ -76,21 +76,15 @@ CLASS lcl_aspec IMPLEMENTATION.
     line_should_be( VALUE ts_a_line( a_key = '2' ) ).
   ENDMETHOD.
 
+  METHOD should_match_table_equality.
+      z_aspec=>expect(
+      VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) )
+        )->to_equal(
+      VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ) ).
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+   should_assert_equals( ).
+   "Should compare line by line
+   actual_should_be( VALUE ts_a_line( a_key = '2' ) ).
+  ENDMETHOD.
 
 ENDCLASS.

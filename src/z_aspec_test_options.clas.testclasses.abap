@@ -1,8 +1,8 @@
 CLASS ltc_aspec_quit DEFINITION
 INHERITING FROM z_aspec_test
-  for testing risk level harmless duration short.
+  FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
 
-    public section.
+  PUBLIC SECTION.
 
   PRIVATE SECTION.
     METHODS:
