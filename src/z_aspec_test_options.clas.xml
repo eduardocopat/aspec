@@ -3,10 +3,10 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <VSEOCLASS>
-    <CLSNAME>Z_ASPEC_TEST</CLSNAME>
+    <CLSNAME>Z_ASPEC_TEST_OPTIONS</CLSNAME>
     <VERSION>1</VERSION>
     <LANGU>E</LANGU>
-    <DESCRIPT>Unit tests for aspec</DESCRIPT>
+    <DESCRIPT>Options test</DESCRIPT>
     <CATEGORY>05</CATEGORY>
     <EXPOSURE>2</EXPOSURE>
     <STATE>1</STATE>

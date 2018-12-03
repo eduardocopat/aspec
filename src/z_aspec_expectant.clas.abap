@@ -7,7 +7,8 @@ CLASS z_aspec_expectant DEFINITION
     METHODS constructor
       IMPORTING
         actual   TYPE any
-        negating TYPE abap_bool DEFAULT abap_false.
+        negating TYPE abap_bool DEFAULT abap_false
+        quit     TYPE aunit_flowctrl optional .
     METHODS to_equal
       IMPORTING
         expected TYPE any.
@@ -19,10 +20,16 @@ CLASS z_aspec_expectant DEFINITION
     METHODS not
       RETURNING
         VALUE(return) TYPE REF TO z_aspec_expectant.
+    METHODS with_quit
+      IMPORTING
+        quit          TYPE aunit_flowctrl
+      RETURNING
+        VALUE(return) TYPE REF TO z_aspec_expectant.
   PROTECTED SECTION.
   PRIVATE SECTION.
     DATA actual TYPE REF TO data.
     DATA negative TYPE abap_bool.
+    DATA quit TYPE aunit_flowctrl.
     METHODS invert_boolean
       IMPORTING
         boolean       TYPE abap_bool
@@ -39,15 +46,17 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
     <actual> = actual.
 
-    negative = negating.
+    me->negative = negating.
+    me->quit = quit.
   ENDMETHOD.
 
   METHOD not.
     ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
 
     return = NEW z_aspec_expectant(
-        actual   = <actual>
-        negating = abap_true ).
+      actual   = <actual>
+      negating = abap_true
+    ).
   ENDMETHOD.
 
   METHOD to_equal.
@@ -55,7 +64,8 @@ CLASS z_aspec_expectant IMPLEMENTATION.
 
     NEW z_aspec_equal_matcher( negative )->match(
       actual   = <actual>
-      expected = expected ).
+      expected = expected
+      quit     = quit ).
   ENDMETHOD.
 
   METHOD to_be_true.
@@ -80,6 +90,15 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     z_aspec_xunit=>asserter->assert_table_contains(
       line             = expected
       table            = <actual> ).
+  ENDMETHOD.
+
+  METHOD with_quit.
+    ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
+
+    return = NEW z_aspec_expectant(
+        actual   = <actual>
+        negating = me->negative
+        quit     = quit ).
   ENDMETHOD.
 
 ENDCLASS.

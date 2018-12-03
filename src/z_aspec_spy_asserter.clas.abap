@@ -8,6 +8,7 @@ CLASS z_aspec_spy_asserter DEFINITION
       z_aspec_xunit_assert.
     CLASS-DATA:
       actual                TYPE REF TO data,
+      quit                  TYPE aunit_flowctrl,
       expected              TYPE REF TO data,
       line                  TYPE REF TO data,
       table                 TYPE REF TO data,
@@ -40,6 +41,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
     assert_equals_called = abap_true.
     save_actual( act ).
     save_expected( exp ).
+    me->quit = quit.
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_true.
@@ -137,20 +139,16 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
 
 
   METHOD save_line.
-
     CREATE DATA me->line LIKE line.
     ASSIGN me->line->* TO FIELD-SYMBOL(<line>).
     <line> = line.
-
   ENDMETHOD.
 
 
   METHOD save_table.
-
     CREATE DATA me->table LIKE table.
     ASSIGN me->table->* TO FIELD-SYMBOL(<table>).
     <table> = table.
-
   ENDMETHOD.
 
 ENDCLASS.
