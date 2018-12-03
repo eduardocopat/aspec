@@ -24,15 +24,15 @@ CLASS z_aspec_equal_matcher IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD match.
-    IF negative = abap_false.
-      z_aspec_xunit=>asserter->assert_equals(
+    IF negative = abap_true.
+       z_aspec_xunit=>asserter->assert_differs(
+        act  = actual
+        exp  = expected ).
+    ELSE.
+     z_aspec_xunit=>asserter->assert_equals(
           act  = actual
           exp  = expected
           quit = quit ).
-    ELSE.
-      z_aspec_xunit=>asserter->assert_differs(
-        act  = actual
-        exp  = expected ).
     ENDIF.
   ENDMETHOD.
 

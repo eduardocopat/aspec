@@ -24,7 +24,8 @@ CLASS z_aspec_test DEFINITION
       should_assert_contains,
       quit_option_should_be
         IMPORTING
-          quit TYPE any.
+          quit TYPE any,
+             should_assert_not_contains.
     TYPES:
       BEGIN OF ts_a_line,
         a_key       TYPE char30,
@@ -37,6 +38,10 @@ ENDCLASS.
 
 
 CLASS z_aspec_test IMPLEMENTATION.
+
+  METHOD should_assert_not_contains.
+    cl_abap_unit_assert=>assert_true( spy_asserter->assert_table_not_contains ).
+  ENDMETHOD.
 
   METHOD quit_option_should_be.
     cl_abap_unit_assert=>assert_equals(

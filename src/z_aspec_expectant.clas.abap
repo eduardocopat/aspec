@@ -63,19 +63,31 @@ CLASS z_aspec_expectant IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD to_equal.
-
     IF actual_is_a_table( ).
-      FIELD-SYMBOLS: <table> TYPE ANY TABLE.
-      ASSIGN me->actual->* TO <table>.
 
-      LOOP AT <table> ASSIGNING FIELD-SYMBOL(<table_line>).
+
+      FIELD-SYMBOLS: <actual_table> TYPE STANDARD TABLE.
+      FIELD-SYMBOLS: <expected_table> TYPE STANDARD TABLE.
+
+      "Dereference to standard table
+      DATA expected_table TYPE REF TO data.
+      CREATE DATA expected_table LIKE expected.
+      ASSIGN expected_table->* TO <expected_table>.
+      <expected_table> = expected.
+
+      ASSIGN me->actual->* TO <actual_table>.
+
+      DATA(table_size) = lines( <actual_table> ).
+
+      DATA(index) = 1.
+      WHILE index <= table_size.
         NEW z_aspec_equal_matcher( negative )->match(
-          actual   = <table_line>
-          expected = expected
-          quit     = quit ).
-      ENDLOOP.
+            actual   = <actual_table>[ index ]
+            expected = <expected_table>[ index ]
+            quit     = quit ).
 
-
+        index = index + 1.
+      ENDWHILE.
 
     ELSE.
       ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
@@ -85,9 +97,6 @@ CLASS z_aspec_expectant IMPLEMENTATION.
         expected = expected
         quit     = quit ).
     ENDIF.
-
-
-
   ENDMETHOD.
 
   METHOD to_be_true.
@@ -109,9 +118,11 @@ CLASS z_aspec_expectant IMPLEMENTATION.
   METHOD to_contain.
     ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
 
-    z_aspec_xunit=>asserter->assert_table_contains(
-      line             = expected
-      table            = <actual> ).
+    NEW z_aspec_contains_matcher( negative )->match(
+      line = expected
+      table   = <actual>
+      quit = ''
+    ).
   ENDMETHOD.
 
   METHOD with_quit.

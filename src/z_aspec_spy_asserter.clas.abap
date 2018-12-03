@@ -7,20 +7,20 @@ CLASS z_aspec_spy_asserter DEFINITION
     INTERFACES:
       z_aspec_xunit_assert.
     CLASS-DATA:
-      actual                TYPE REF TO data,
-      quit                  TYPE aunit_flowctrl,
-      expected              TYPE REF TO data,
-      line                  TYPE REF TO data,
-      table                 TYPE REF TO data,
-      assert_equals_called  TYPE abap_bool,
-      assert_true_called    TYPE abap_bool,
-      assert_false_called   TYPE abap_bool,
-      assert_differs_called TYPE abap_bool,
-      assert_table_contains TYPE abap_bool.
+      actual                    TYPE REF TO data,
+      quit                      TYPE aunit_flowctrl,
+      expected                  TYPE REF TO data,
+      line                      TYPE REF TO data,
+      table                     TYPE REF TO data,
+      assert_equals_called      TYPE abap_bool,
+      assert_true_called        TYPE abap_bool,
+      assert_false_called       TYPE abap_bool,
+      assert_differs_called     TYPE abap_bool,
+      assert_table_contains     TYPE abap_bool,
+      assert_table_not_contains TYPE abap_bool.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
-
     METHODS save_actual
       IMPORTING
         actual TYPE any.
@@ -122,7 +122,10 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_table_not_contains.
+    assert_table_not_contains = abap_true.
 
+    save_line( line ).
+    save_table( table ).
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_text_matches.

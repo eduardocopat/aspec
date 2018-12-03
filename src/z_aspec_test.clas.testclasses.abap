@@ -14,7 +14,9 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
       should_match_falsiness      FOR TESTING RAISING cx_static_check,
       should_match_not_falsiness  FOR TESTING RAISING cx_static_check,
       should_match_contains       FOR TESTING RAISING cx_static_check,
-      should_match_table_equality FOR TESTING RAISING cx_static_check.
+      should_match_table_equality FOR TESTING RAISING cx_static_check,
+      should_match_not_contains FOR TESTING RAISING cx_static_check,
+      should_match_table_not_equal FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 CLASS lcl_aspec IMPLEMENTATION.
   METHOD setup.
@@ -66,25 +68,50 @@ CLASS lcl_aspec IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD should_match_contains.
-    z_aspec=>expect(
-      VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) )
-    )->to_contain(
-      VALUE ts_a_line( a_key = '2' ) ) .
+    DATA(table) = VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ).
+    DATA(line) = VALUE ts_a_line( a_key = '2' ).
+    z_aspec=>expect( table )->to_contain( line ) .
 
     should_assert_contains( ).
-    table_should_be( VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ) ).
-    line_should_be( VALUE ts_a_line( a_key = '2' ) ).
+    table_should_be( table ).
+    line_should_be( line ).
+  ENDMETHOD.
+
+  METHOD should_match_not_contains.
+    DATA(table) = VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ).
+    DATA(line) = VALUE ts_a_line( a_key = '3' ).
+
+    z_aspec=>expect( table )->not( )->to_contain( line ) .
+
+    should_assert_not_contains( ).
+    table_should_be( table ).
+    line_should_be( line ).
   ENDMETHOD.
 
   METHOD should_match_table_equality.
-      z_aspec=>expect(
-      VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) )
-        )->to_equal(
-      VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ) ).
+    DATA(table) = VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ).
+    DATA(another_table) = VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ) .
 
-   should_assert_equals( ).
-   "Should compare line by line
-   actual_should_be( VALUE ts_a_line( a_key = '2' ) ).
+    z_aspec=>expect( table )->to_equal( another_table ).
+
+    should_assert_equals( ).
+    "Should compare line by line
+    actual_should_be( VALUE ts_a_line( a_key = '2' ) ).
+    expected_should_be( VALUE ts_a_line( a_key = '2' ) ).
   ENDMETHOD.
+
+  METHOD should_match_table_not_equal.
+    DATA(table) = VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ).
+    DATA(another_table) = VALUE ts_a_table( ( a_key = '3' ) ( a_key = '4' ) ) .
+
+    z_aspec=>expect( table )->not( )->to_equal( another_table ).
+
+    should_assert_differs( ).
+    "Should compare line by line
+    actual_should_be( VALUE ts_a_line( a_key = '2' ) ).
+    expected_should_be( VALUE ts_a_line( a_key = '4' ) ).
+  ENDMETHOD.
+
+
 
 ENDCLASS.
