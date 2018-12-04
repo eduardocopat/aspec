@@ -14,6 +14,7 @@ CLASS z_aspec_expectant DEFINITION
         expected TYPE any.
     METHODS to_be_true.
     METHODS to_be_false.
+    METHODS to_fail.
     METHODS to_contain
       IMPORTING
         expected TYPE any.
@@ -64,8 +65,6 @@ CLASS z_aspec_expectant IMPLEMENTATION.
 
   METHOD to_equal.
     IF actual_is_a_table( ).
-
-
       FIELD-SYMBOLS: <actual_table> TYPE STANDARD TABLE.
       FIELD-SYMBOLS: <expected_table> TYPE STANDARD TABLE.
 
@@ -145,6 +144,12 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     "https://help.sap.com/doc/abapdocu_750_index_htm/7.50/en-US/abapdescribe_field.htm
     IF actual_type = internal_table.
       return = abap_true.
+    ENDIF.
+  ENDMETHOD.
+
+  METHOD to_fail.
+    IF negative = abap_false.
+      z_aspec_xunit=>asserter->fail( ).
     ENDIF.
   ENDMETHOD.
 

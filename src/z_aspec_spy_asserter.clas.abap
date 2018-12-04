@@ -6,7 +6,7 @@ CLASS z_aspec_spy_asserter DEFINITION
   PUBLIC SECTION.
     INTERFACES:
       z_aspec_xunit_assert.
-    CLASS-DATA:
+    DATA:
       actual                    TYPE REF TO data,
       quit                      TYPE aunit_flowctrl,
       expected                  TYPE REF TO data,
@@ -17,7 +17,8 @@ CLASS z_aspec_spy_asserter DEFINITION
       assert_false_called       TYPE abap_bool,
       assert_differs_called     TYPE abap_bool,
       assert_table_contains     TYPE abap_bool,
-      assert_table_not_contains TYPE abap_bool.
+      assert_table_not_contains TYPE abap_bool,
+      assert_fail               TYPE abap_bool.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -137,7 +138,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~fail.
-
+    assert_fail = abap_true.
   ENDMETHOD.
 
 

@@ -5,7 +5,7 @@ CLASS z_aspec DEFINITION
   PUBLIC SECTION.
     CLASS-METHODS expect
       IMPORTING
-        actual        TYPE any
+        actual        TYPE any optional
       RETURNING
         VALUE(return) TYPE REF TO z_aspec_expectant.
   PROTECTED SECTION.

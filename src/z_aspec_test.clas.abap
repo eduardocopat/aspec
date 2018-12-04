@@ -1,6 +1,7 @@
 CLASS z_aspec_test DEFINITION
   PUBLIC ABSTRACT
-  FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
+  FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
+  inheriting from z_aspec.
 
   PUBLIC SECTION.
   PROTECTED SECTION.
@@ -25,19 +26,26 @@ CLASS z_aspec_test DEFINITION
       quit_option_should_be
         IMPORTING
           quit TYPE any,
-             should_assert_not_contains.
+             should_assert_not_contains,
+             should_assert_fail.
     TYPES:
       BEGIN OF ts_a_line,
         a_key       TYPE char30,
         description TYPE char30,
       END OF ts_a_line,
       ts_a_table TYPE TABLE OF ts_a_line WITH KEY a_key.
-  PRIVATE SECTION.
+    METHODS should_assert_not_fail.
 ENDCLASS.
 
 
 
 CLASS z_aspec_test IMPLEMENTATION.
+  METHOD should_assert_not_fail.
+    cl_abap_unit_assert=>assert_false( spy_asserter->assert_fail ).
+  endmethod.
+  METHOD should_assert_fail.
+    cl_abap_unit_assert=>assert_true( spy_asserter->assert_fail ).
+  ENDMETHOD.
 
   METHOD should_assert_not_contains.
     cl_abap_unit_assert=>assert_true( spy_asserter->assert_table_not_contains ).
