@@ -18,7 +18,7 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
       match_not_contains    FOR TESTING RAISING cx_static_check,
       match_table_not_equal FOR TESTING RAISING cx_static_check,
       fail                  FOR TESTING RAISING cx_static_check,
-      fail_table_size_different for testing RAISING cx_static_check,
+      fail_table_size_different FOR TESTING RAISING cx_static_check,
       not_fail FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 CLASS lcl_aspec IMPLEMENTATION.
@@ -116,7 +116,12 @@ CLASS lcl_aspec IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD fail_table_size_different.
+    DATA(table) = VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ).
+    DATA(larger_table) = VALUE ts_a_table( ( a_key = '3' ) ( a_key = '4' ) ( a_key = '5' ) ).
 
+    expect( table )->not( )->to_equal( larger_table ).
+    should_assert_fail( ).
+    message_should_be( 'Tables do not have the same size' ).
   ENDMETHOD.
 
   METHOD fail.
@@ -130,4 +135,7 @@ CLASS lcl_aspec IMPLEMENTATION.
 
     should_assert_not_fail( ).
   ENDMETHOD.
+
+
+
 ENDCLASS.

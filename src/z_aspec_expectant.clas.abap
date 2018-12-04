@@ -77,6 +77,9 @@ CLASS z_aspec_expectant IMPLEMENTATION.
       ASSIGN me->actual->* TO <actual_table>.
 
       DATA(table_size) = lines( <actual_table> ).
+      IF table_size <> lines( <expected_table> ).
+         z_aspec_xunit=>asserter->fail( msg = 'Tables do not have the same size' ).
+      ENDIF.
 
       DATA(index) = 1.
       WHILE index <= table_size.

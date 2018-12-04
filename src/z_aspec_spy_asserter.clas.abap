@@ -18,7 +18,8 @@ CLASS z_aspec_spy_asserter DEFINITION
       assert_differs_called     TYPE abap_bool,
       assert_table_contains     TYPE abap_bool,
       assert_table_not_contains TYPE abap_bool,
-      assert_fail               TYPE abap_bool.
+      assert_fail               TYPE abap_bool,
+      message                   TYPE string.
 
   PROTECTED SECTION.
   PRIVATE SECTION.
@@ -139,6 +140,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
 
   METHOD z_aspec_xunit_assert~fail.
     assert_fail = abap_true.
+    message = msg.
   ENDMETHOD.
 
 

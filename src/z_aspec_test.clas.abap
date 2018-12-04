@@ -35,11 +35,20 @@ CLASS z_aspec_test DEFINITION
       END OF ts_a_line,
       ts_a_table TYPE TABLE OF ts_a_line WITH KEY a_key.
     METHODS should_assert_not_fail.
+    METHODS: message_should_be
+            IMPORTING
+              message TYPE string.
 ENDCLASS.
 
 
 
 CLASS z_aspec_test IMPLEMENTATION.
+  METHOD message_should_be.
+    cl_abap_unit_assert=>assert_equals(
+      exp = message
+      act = spy_asserter->message ).
+  ENDMETHOD.
+
   METHOD should_assert_not_fail.
     cl_abap_unit_assert=>assert_false( spy_asserter->assert_fail ).
   endmethod.
