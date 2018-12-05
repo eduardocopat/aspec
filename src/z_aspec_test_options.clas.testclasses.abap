@@ -1,3 +1,6 @@
+"Missing table equal
+
+
 CLASS ltc_equal_options DEFINITION
 FOR TESTING
 INHERITING FROM z_aspec_test_options

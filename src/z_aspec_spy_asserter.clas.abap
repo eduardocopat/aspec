@@ -35,6 +35,9 @@ CLASS z_aspec_spy_asserter DEFINITION
     METHODS save_table
       IMPORTING
         table TYPE ANY TABLE.
+    METHODS save_quit
+      IMPORTING
+        quit TYPE aunit_flowctrl.
 
 ENDCLASS.
 
@@ -43,18 +46,20 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
     assert_equals_called = abap_true.
     save_actual( act ).
     save_expected( exp ).
-    me->quit = quit.
+    save_quit( quit ).
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_true.
     assert_true_called = abap_true.
     save_actual( act ).
+    save_quit( quit ).
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_differs.
     assert_differs_called = abap_true.
     save_actual( act ).
     save_expected( exp ).
+    save_quit( quit ).
   ENDMETHOD.
 
 
@@ -94,6 +99,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
   METHOD z_aspec_xunit_assert~assert_false.
     assert_false_called = abap_true.
     save_actual( act ).
+    save_quit( quit ).
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_initial.
@@ -141,6 +147,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
   METHOD z_aspec_xunit_assert~fail.
     assert_fail = abap_true.
     message = msg.
+    save_quit( quit ).
   ENDMETHOD.
 
 
@@ -155,6 +162,11 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
     CREATE DATA me->table LIKE table.
     ASSIGN me->table->* TO FIELD-SYMBOL(<table>).
     <table> = table.
+  ENDMETHOD.
+
+
+  METHOD save_quit.
+    me->quit = quit.
   ENDMETHOD.
 
 ENDCLASS.

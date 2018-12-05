@@ -63,6 +63,7 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     return = NEW z_aspec_expectant(
       actual   = <actual>
       negating = abap_true
+      quit     = quit
     ).
   ENDMETHOD.
 
