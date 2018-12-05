@@ -24,8 +24,7 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
 ENDCLASS.
 CLASS lcl_aspec IMPLEMENTATION.
   METHOD setup.
-    spy_asserter = NEW z_aspec_spy_asserter( ).
-    z_aspec_xunit=>asserter = spy_asserter.
+    setup_spy_asserter( ).
   ENDMETHOD.
   METHOD match_equality.
     expect( 1 )->to_equal( 1 ).
@@ -127,6 +126,8 @@ CLASS lcl_aspec IMPLEMENTATION.
 
     expect( table )->not( )->to_equal( larger_table ).
     should_assert_fail( ).
+    should_not_assert_equals( ).
+    should_not_assert_differs( ).
     message_should_be( 'Tables do not have the same size' ).
   ENDMETHOD.
 

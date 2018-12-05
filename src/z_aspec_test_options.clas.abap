@@ -10,6 +10,9 @@ CLASS z_aspec_test_options DEFINITION
       not_quit        FOR TESTING RAISING cx_static_check,
       message         FOR TESTING RAISING cx_static_check,
       not_message     FOR TESTING RAISING cx_static_check,
+      "Combo
+      message_quit    FOR TESTING RAISING cx_static_check,
+      quit_message    FOR TESTING RAISING cx_static_check,
       given_expectant ABSTRACT,
       when_matching   ABSTRACT.
     DATA:
@@ -22,12 +25,11 @@ ENDCLASS.
 CLASS z_aspec_test_options IMPLEMENTATION.
 
   METHOD setup.
-    spy_asserter = NEW z_aspec_spy_asserter( ).
-    z_aspec_xunit=>asserter = spy_asserter.
+    setup_spy_asserter( ).
+    given_expectant( ).
   ENDMETHOD.
 
   METHOD not_quit.
-    given_expectant( ).
     me->expectant = expectant->not( )->with_quit( if_aunit_constants=>class ).
 
     when_matching( ).
@@ -35,9 +37,7 @@ CLASS z_aspec_test_options IMPLEMENTATION.
     quit_option_should_be( if_aunit_constants=>class ).
   ENDMETHOD.
 
-
   METHOD quit.
-    given_expectant( ).
     me->expectant = expectant->with_quit( if_aunit_constants=>class ).
 
     when_matching( ).
@@ -46,14 +46,12 @@ CLASS z_aspec_test_options IMPLEMENTATION.
   ENDMETHOD.
 
   METHOD message.
-    given_expectant( ).
     me->expectant = expectant->with_message( 'a message' ).
 
     when_matching( ).
 
     message_option_should_be( 'a message' ).
   ENDMETHOD.
-
 
   METHOD not_message.
     given_expectant( ).
@@ -62,6 +60,24 @@ CLASS z_aspec_test_options IMPLEMENTATION.
     when_matching( ).
 
     message_option_should_be( 'a message' ).
+  ENDMETHOD.
+
+  METHOD message_quit.
+    me->expectant = expectant->with_message( 'a message' )->with_quit( if_aunit_constants=>class ).
+
+    when_matching( ).
+
+    message_option_should_be( 'a message' ).
+    quit_option_should_be( if_aunit_constants=>class ).
+  ENDMETHOD.
+
+  METHOD quit_message.
+    me->expectant = expectant->with_quit( if_aunit_constants=>class )->with_message( 'a message' ).
+
+    when_matching( ).
+
+    message_option_should_be( 'a message' ).
+    quit_option_should_be( if_aunit_constants=>class ).
   ENDMETHOD.
 
 ENDCLASS.

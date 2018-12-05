@@ -120,7 +120,8 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     return = NEW z_aspec_expectant(
         actual   = <actual>
         negating = me->negative
-        quit     = quit ).
+        quit     = quit
+        message  = message ).
   ENDMETHOD.
 
 
@@ -159,6 +160,7 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     DATA(table_size) = lines( <actual_table> ).
     IF table_size <> lines( <expected_table> ).
       z_aspec_xunit=>asserter->fail( msg = 'Tables do not have the same size' ).
+      RETURN.
     ENDIF.
 
     DATA(index) = 1.
@@ -180,6 +182,7 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     return = NEW z_aspec_expectant(
         actual   = <actual>
         negating = me->negative
+        quit     = quit
         message  = message ).
   ENDMETHOD.
 

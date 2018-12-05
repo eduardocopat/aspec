@@ -151,7 +151,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
 
   METHOD z_aspec_xunit_assert~fail.
     assert_fail = abap_true.
-    message = msg.
+    save_message( msg ).
     save_quit( quit ).
   ENDMETHOD.
 
