@@ -1,26 +1,18 @@
-CLASS ltc_aspec_quit DEFINITION
-INHERITING FROM z_aspec_test
-  FOR TESTING RISK LEVEL HARMLESS DURATION SHORT.
-
-  PUBLIC SECTION.
-
-  PRIVATE SECTION.
-    METHODS:
-      setup,
-      should_match_with_quit FOR TESTING RAISING cx_static_check.
+CLASS ltc_equal_options DEFINITION
+FOR TESTING
+INHERITING FROM z_aspec_test_options
+RISK LEVEL HARMLESS DURATION SHORT.
+  PROTECTED SECTION.
+    METHODS: given_expectant REDEFINITION,
+             when_matching REDEFINITION.
 ENDCLASS.
-CLASS ltc_aspec_quit IMPLEMENTATION.
-  METHOD setup.
-    spy_asserter = NEW z_aspec_spy_asserter( ).
-    z_aspec_xunit=>asserter = spy_asserter.
+CLASS ltc_equal_options IMPLEMENTATION.
+  METHOD given_expectant.
+    me->expectant = z_aspec=>expect( 1 ).
   ENDMETHOD.
 
-  METHOD should_match_with_quit.
-    z_aspec=>expect( 1 )->with_quit( if_aunit_constants=>class )->to_equal( 1 ).
-
-    should_assert_equals( ).
-    quit_option_should_be( if_aunit_constants=>class ).
+  METHOD when_matching.
+    expectant->to_equal( 1 ).
   ENDMETHOD.
-
 
 ENDCLASS.

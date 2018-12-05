@@ -39,6 +39,9 @@ CLASS z_aspec_expectant DEFINITION
     METHODS actual_is_a_table
       RETURNING
         VALUE(return) TYPE abap_bool.
+    METHODS compare_tables
+      IMPORTING
+        expected TYPE any.
 
 ENDCLASS.
 
@@ -65,32 +68,7 @@ CLASS z_aspec_expectant IMPLEMENTATION.
 
   METHOD to_equal.
     IF actual_is_a_table( ).
-      FIELD-SYMBOLS: <actual_table> TYPE STANDARD TABLE.
-      FIELD-SYMBOLS: <expected_table> TYPE STANDARD TABLE.
-
-      "Dereference to standard table
-      DATA expected_table TYPE REF TO data.
-      CREATE DATA expected_table LIKE expected.
-      ASSIGN expected_table->* TO <expected_table>.
-      <expected_table> = expected.
-
-      ASSIGN me->actual->* TO <actual_table>.
-
-      DATA(table_size) = lines( <actual_table> ).
-      IF table_size <> lines( <expected_table> ).
-         z_aspec_xunit=>asserter->fail( msg = 'Tables do not have the same size' ).
-      ENDIF.
-
-      DATA(index) = 1.
-      WHILE index <= table_size.
-        NEW z_aspec_equal_matcher( negative )->match(
-            actual   = <actual_table>[ index ]
-            expected = <expected_table>[ index ]
-            quit     = quit ).
-
-        index = index + 1.
-      ENDWHILE.
-
+      compare_tables( expected ).
     ELSE.
       ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
 
@@ -139,7 +117,7 @@ CLASS z_aspec_expectant IMPLEMENTATION.
 
   METHOD actual_is_a_table.
     CONSTANTS:
-           internal_table TYPE string VALUE 'h'.
+      internal_table TYPE string VALUE 'h'.
 
     ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
     DESCRIBE FIELD <actual> TYPE DATA(actual_type).
@@ -154,6 +132,35 @@ CLASS z_aspec_expectant IMPLEMENTATION.
     IF negative = abap_false.
       z_aspec_xunit=>asserter->fail( ).
     ENDIF.
+  ENDMETHOD.
+
+
+  METHOD compare_tables.
+    FIELD-SYMBOLS: <actual_table> TYPE STANDARD TABLE.
+    FIELD-SYMBOLS: <expected_table> TYPE STANDARD TABLE.
+
+    "Dereference to standard table
+    DATA expected_table TYPE REF TO data.
+    CREATE DATA expected_table LIKE expected.
+    ASSIGN expected_table->* TO <expected_table>.
+    <expected_table> = expected.
+
+    ASSIGN me->actual->* TO <actual_table>.
+
+    DATA(table_size) = lines( <actual_table> ).
+    IF table_size <> lines( <expected_table> ).
+      z_aspec_xunit=>asserter->fail( msg = 'Tables do not have the same size' ).
+    ENDIF.
+
+    DATA(index) = 1.
+    WHILE index <= table_size.
+      NEW z_aspec_equal_matcher( negative )->match(
+          actual   = <actual_table>[ index ]
+          expected = <expected_table>[ index ]
+          quit     = quit ).
+
+      index = index + 1.
+    ENDWHILE.
   ENDMETHOD.
 
 ENDCLASS.

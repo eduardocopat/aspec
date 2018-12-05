@@ -7,19 +7,20 @@ CLASS lcl_aspec DEFINITION FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
 
     METHODS:
       setup,
-      match_equality        FOR TESTING RAISING cx_static_check,
-      match_not_equality    FOR TESTING RAISING cx_static_check,
-      match_truthiness      FOR TESTING RAISING cx_static_check,
-      match_not_truthiness  FOR TESTING RAISING cx_static_check,
-      match_falsiness       FOR TESTING RAISING cx_static_check,
-      match_not_falsiness   FOR TESTING RAISING cx_static_check,
-      match_contains        FOR TESTING RAISING cx_static_check,
-      match_table_equal     FOR TESTING RAISING cx_static_check,
-      match_not_contains    FOR TESTING RAISING cx_static_check,
-      match_table_not_equal FOR TESTING RAISING cx_static_check,
-      fail                  FOR TESTING RAISING cx_static_check,
+      match_equality            FOR TESTING RAISING cx_static_check,
+      match_not_equality        FOR TESTING RAISING cx_static_check,
+      match_truthiness          FOR TESTING RAISING cx_static_check,
+      match_not_truthiness      FOR TESTING RAISING cx_static_check,
+      match_falsiness           FOR TESTING RAISING cx_static_check,
+      match_not_falsiness       FOR TESTING RAISING cx_static_check,
+      match_contains            FOR TESTING RAISING cx_static_check,
+      match_table_equal         FOR TESTING RAISING cx_static_check,
+      match_not_contains        FOR TESTING RAISING cx_static_check,
+      match_table_not_equal     FOR TESTING RAISING cx_static_check,
+      match_empty_table         FOR TESTING RAISING cx_static_check,
+      fail                      FOR TESTING RAISING cx_static_check,
       fail_table_size_different FOR TESTING RAISING cx_static_check,
-      not_fail FOR TESTING RAISING cx_static_check.
+      not_fail                  FOR TESTING RAISING cx_static_check.
 ENDCLASS.
 CLASS lcl_aspec IMPLEMENTATION.
   METHOD setup.
@@ -115,6 +116,11 @@ CLASS lcl_aspec IMPLEMENTATION.
     expected_should_be( VALUE ts_a_line( a_key = '4' ) ).
   ENDMETHOD.
 
+  METHOD match_empty_table.
+    "Should not dump
+    expect( VALUE ts_a_table( ) )->to_equal(  VALUE ts_a_table( ) ).
+  ENDMETHOD.
+
   METHOD fail_table_size_different.
     DATA(table) = VALUE ts_a_table( ( a_key = '1' ) ( a_key = '2' ) ).
     DATA(larger_table) = VALUE ts_a_table( ( a_key = '3' ) ( a_key = '4' ) ( a_key = '5' ) ).
@@ -135,7 +141,5 @@ CLASS lcl_aspec IMPLEMENTATION.
 
     should_assert_not_fail( ).
   ENDMETHOD.
-
-
 
 ENDCLASS.

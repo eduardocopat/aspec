@@ -3,11 +3,13 @@ CLASS z_aspec DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    CLASS-METHODS expect
-      IMPORTING
-        actual        TYPE any optional
-      RETURNING
-        VALUE(return) TYPE REF TO z_aspec_expectant.
+
+    CLASS-METHODS:
+      expect
+        IMPORTING
+          actual        TYPE any OPTIONAL
+        RETURNING
+          VALUE(return) TYPE REF TO z_aspec_expectant.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
