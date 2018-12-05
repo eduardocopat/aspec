@@ -20,8 +20,16 @@ cl_abap_unit_assert=>assert_equals(
 ###### aspec
 ```abap
 DATA(integer) = NEW integer( 2 ).
+z_aspec=>expect( integer->sum( 3 ) )->to_equal( 5 ).
+```
+
+Or using **inheriting** `z_aspec`:
+
+```abap
+DATA(integer) = NEW integer( 2 ).
 expect( integer->sum( 3 ) )->to_equal( 5 ).
 ```
+
 ### Inequality/not
 ###### abap_unit
 ```abap
