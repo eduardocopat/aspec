@@ -76,10 +76,13 @@ CLASS z_aspec_expectant IMPLEMENTATION.
 
   METHOD to_equal.
     IF actual_is_a_table( ).
-      compare_tables( expected ).
+      NEW z_aspec_tables_matcher( negative )->match(
+        actual   = actual
+        expected = expected
+        quit     = quit
+        message  = message ).
     ELSE.
       ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
-
       NEW z_aspec_equal_matcher( negative )->match(
         actual   = <actual>
         expected = expected

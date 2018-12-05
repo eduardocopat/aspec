@@ -1,26 +1,18 @@
 CLASS z_aspec_boolean_matcher DEFINITION
   PUBLIC
   FINAL
+  INHERITING FROM z_aspec_matcher
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    METHODS constructor
-      IMPORTING
-        negating TYPE abap_bool.
-    METHODS match
-      IMPORTING
-        actual   TYPE any.
+    METHODS match REDEFINITION.
   PROTECTED SECTION.
   PRIVATE SECTION.
-    DATA: negative TYPE abap_bool.
 ENDCLASS.
 
 
 
 CLASS z_aspec_boolean_matcher IMPLEMENTATION.
-  METHOD constructor.
-    me->negative = negating.
-  ENDMETHOD.
 
   METHOD match.
     IF negative = abap_true.
