@@ -23,7 +23,7 @@ DATA(integer) = NEW integer( 2 ).
 z_aspec=>expect( integer->sum( 3 ) )->to_equal( 5 ).
 ```
 
-Or using **inheriting** `z_aspec`:
+Or **inheriting** `z_aspec`:
 
 ```abap
 DATA(integer) = NEW integer( 2 ).
@@ -42,7 +42,7 @@ cl_abap_unit_assert=>assert_differs(
 ###### aspec
 ```abap
 DATA(integer) = NEW integer( 2 ).
-expect( integer->sum( 3 ) )->not( )->to_equal( 6 ).
+z_aspec=>expect( integer->sum( 3 ) )->not( )->to_equal( 6 ).
 ```
 ### Boolean
 ###### abap_unit
@@ -54,8 +54,8 @@ cl_abap_unit_assert=>assert_false( integer->is_negative( ) ).
 ###### aspec
 ```abap
 DATA(integer) = NEW integer( 2 ).
-expect( integer->is_positive( ) )->to_be_true( ).
-expect( integer->is_negative( ) )->to_be_false( ).
+z_aspec=>expect( integer->is_positive( ) )->to_be_true( ).
+z_aspec=>expect( integer->is_negative( ) )->to_be_false( ).
 ```
 ### Table comparison
 Comparing tables using abap unit assert_equals will not indicate which structure component and index is different. This can be especially hard for tables with large structures.
@@ -63,8 +63,8 @@ Comparing tables using abap unit assert_equals will not indicate which structure
 aspec will point directly to the different columns and index.
 
 #### And much more...
-- contains: `expect( table )->to_contain( line ).`
-- fail: `expect( )->to_fail( )`
+- contains: `z_aspec=>expect( table )->to_contain( line ).`
+- fail: `z_aspec=>expect( )->to_fail( )`
 
 ## Install
 
