@@ -8,7 +8,8 @@ CLASS z_aspec_expectant DEFINITION
       IMPORTING
         actual   TYPE any
         negating TYPE abap_bool DEFAULT abap_false
-        quit     TYPE aunit_flowctrl OPTIONAL .
+        quit     TYPE aunit_flowctrl OPTIONAL
+        message  TYPE string OPTIONAL.
     METHODS to_equal
       IMPORTING
         expected TYPE any.
@@ -26,11 +27,17 @@ CLASS z_aspec_expectant DEFINITION
         quit          TYPE aunit_flowctrl
       RETURNING
         VALUE(return) TYPE REF TO z_aspec_expectant.
+    METHODS with_message
+      IMPORTING
+        message       TYPE string
+      RETURNING
+        value(return) TYPE REF TO z_aspec_expectant.
   PROTECTED SECTION.
   PRIVATE SECTION.
     DATA actual TYPE REF TO data.
     DATA negative TYPE abap_bool.
     DATA quit TYPE aunit_flowctrl.
+    DATA message TYPE string.
     METHODS invert_boolean
       IMPORTING
         boolean       TYPE abap_bool
@@ -42,7 +49,6 @@ CLASS z_aspec_expectant DEFINITION
     METHODS compare_tables
       IMPORTING
         expected TYPE any.
-
 ENDCLASS.
 
 
@@ -55,6 +61,7 @@ CLASS z_aspec_expectant IMPLEMENTATION.
 
     me->negative = negating.
     me->quit = quit.
+    me->message = message.
   ENDMETHOD.
 
   METHOD not.
@@ -76,7 +83,8 @@ CLASS z_aspec_expectant IMPLEMENTATION.
       NEW z_aspec_equal_matcher( negative )->match(
         actual   = <actual>
         expected = expected
-        quit     = quit ).
+        quit     = quit
+        message  = message ).
     ENDIF.
   ENDMETHOD.
 
@@ -158,10 +166,21 @@ CLASS z_aspec_expectant IMPLEMENTATION.
       NEW z_aspec_equal_matcher( negative )->match(
           actual   = <actual_table>[ index ]
           expected = <expected_table>[ index ]
-          quit     = quit ).
+          quit     = quit
+          message = '' ).
 
       index = index + 1.
     ENDWHILE.
+  ENDMETHOD.
+
+
+  METHOD with_message.
+    ASSIGN me->actual->* TO FIELD-SYMBOL(<actual>).
+
+    return = NEW z_aspec_expectant(
+        actual   = <actual>
+        negating = me->negative
+        message  = message ).
   ENDMETHOD.
 
 ENDCLASS.

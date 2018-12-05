@@ -38,6 +38,9 @@ CLASS z_aspec_spy_asserter DEFINITION
     METHODS save_quit
       IMPORTING
         quit TYPE aunit_flowctrl.
+    METHODS save_message
+      IMPORTING
+        message TYPE csequence.
 
 ENDCLASS.
 
@@ -47,6 +50,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
     save_actual( act ).
     save_expected( exp ).
     save_quit( quit ).
+    save_message( msg ).
   ENDMETHOD.
 
   METHOD z_aspec_xunit_assert~assert_true.
@@ -60,6 +64,7 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
     save_actual( act ).
     save_expected( exp ).
     save_quit( quit ).
+    save_message( msg ).
   ENDMETHOD.
 
 
@@ -167,6 +172,11 @@ CLASS z_aspec_spy_asserter IMPLEMENTATION.
 
   METHOD save_quit.
     me->quit = quit.
+  ENDMETHOD.
+
+
+  METHOD save_message.
+    me->message = message.
   ENDMETHOD.
 
 ENDCLASS.

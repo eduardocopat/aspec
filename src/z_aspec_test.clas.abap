@@ -1,7 +1,7 @@
 CLASS z_aspec_test DEFINITION
   PUBLIC ABSTRACT
   FOR TESTING RISK LEVEL HARMLESS DURATION SHORT
-  inheriting from z_aspec.
+  INHERITING FROM z_aspec.
 
   PUBLIC SECTION.
   PROTECTED SECTION.
@@ -23,11 +23,14 @@ CLASS z_aspec_test DEFINITION
       should_assert_differs,
       should_assert_false,
       should_assert_contains,
+      should_assert_not_contains,
+      should_assert_fail,
       quit_option_should_be
         IMPORTING
           quit TYPE any,
-             should_assert_not_contains,
-             should_assert_fail.
+      message_option_should_be
+        importing
+          message type string.
     TYPES:
       BEGIN OF ts_a_line,
         a_key       TYPE char30,
@@ -36,8 +39,8 @@ CLASS z_aspec_test DEFINITION
       ts_a_table TYPE TABLE OF ts_a_line WITH KEY a_key.
     METHODS should_assert_not_fail.
     METHODS: message_should_be
-            IMPORTING
-              message TYPE string.
+      IMPORTING
+        message TYPE string.
 ENDCLASS.
 
 
@@ -51,7 +54,7 @@ CLASS z_aspec_test IMPLEMENTATION.
 
   METHOD should_assert_not_fail.
     cl_abap_unit_assert=>assert_false( spy_asserter->assert_fail ).
-  endmethod.
+  ENDMETHOD.
   METHOD should_assert_fail.
     cl_abap_unit_assert=>assert_true( spy_asserter->assert_fail ).
   ENDMETHOD.
@@ -64,6 +67,12 @@ CLASS z_aspec_test IMPLEMENTATION.
     cl_abap_unit_assert=>assert_equals(
       act = spy_asserter->quit
       exp = quit ).
+  ENDMETHOD.
+
+  METHOD message_option_should_be.
+    cl_abap_unit_assert=>assert_equals(
+      act = spy_asserter->message
+      exp = message ).
   ENDMETHOD.
 
   METHOD should_assert_contains.

@@ -1,5 +1,7 @@
 "Missing table equal
-
+"Missing boolean matcher
+"Missing contains matcher
+"Missing fail matcher
 
 CLASS ltc_equal_options DEFINITION
 FOR TESTING

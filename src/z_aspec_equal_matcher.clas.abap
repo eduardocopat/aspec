@@ -11,7 +11,8 @@ CLASS z_aspec_equal_matcher DEFINITION
       IMPORTING
         actual   TYPE any
         expected TYPE any
-        quit     TYPE aunit_flowctrl.
+        quit     TYPE aunit_flowctrl
+        message  TYPE csequence.
   PROTECTED SECTION.
   PRIVATE SECTION.
     DATA: negative TYPE abap_bool.
@@ -28,12 +29,14 @@ CLASS z_aspec_equal_matcher IMPLEMENTATION.
       z_aspec_xunit=>asserter->assert_differs(
         act  = actual
         exp  = expected
-        quit = quit ).
+        quit = quit
+        msg  = message ).
     ELSE.
       z_aspec_xunit=>asserter->assert_equals(
         act  = actual
         exp  = expected
-        quit = quit ).
+        quit = quit
+        msg  = message ).
     ENDIF.
   ENDMETHOD.
 
