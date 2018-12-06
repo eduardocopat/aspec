@@ -4,12 +4,13 @@
 "Missing fail matcher
 
 CLASS ltc_equal_options DEFINITION
-FOR TESTING
-INHERITING FROM z_aspec_test_options
-RISK LEVEL HARMLESS DURATION SHORT.
+  FOR TESTING
+  INHERITING FROM z_aspec_test_options
+  RISK LEVEL HARMLESS DURATION SHORT.
   PROTECTED SECTION.
-    METHODS: given_expectant REDEFINITION,
-             when_matching REDEFINITION.
+    METHODS:
+      given_expectant REDEFINITION,
+      when_matching REDEFINITION.
 ENDCLASS.
 CLASS ltc_equal_options IMPLEMENTATION.
   METHOD given_expectant.
@@ -19,5 +20,24 @@ CLASS ltc_equal_options IMPLEMENTATION.
   METHOD when_matching.
     expectant->to_equal( 1 ).
   ENDMETHOD.
-
 ENDCLASS.
+
+
+*CLASS ltc_boolean_options DEFINITION
+*  FOR TESTING
+*  INHERITING FROM z_aspec_test_options
+*  RISK LEVEL HARMLESS DURATION SHORT.
+*  PROTECTED SECTION.
+*    METHODS:
+*      given_expectant REDEFINITION,
+*      when_matching REDEFINITION.
+*ENDCLASS.
+*CLASS ltc_boolean_options IMPLEMENTATION.
+*  METHOD given_expectant.
+*    me->expectant = z_aspec=>expect( abap_true ).
+*  ENDMETHOD.
+*
+*  METHOD when_matching.
+*    expectant->to_be_true( ).
+*  ENDMETHOD.
+*ENDCLASS.

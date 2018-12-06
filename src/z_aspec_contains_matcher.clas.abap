@@ -5,12 +5,14 @@ CLASS z_aspec_contains_matcher DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    METHODS match REDEFINITION.
+    METHODS match
+      IMPORTING
+        line   TYPE any
+        !table type any table
+        quit   TYPE aunit_flowctrl.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
-
-
 
 CLASS z_aspec_contains_matcher IMPLEMENTATION.
   METHOD match.
@@ -23,5 +25,5 @@ CLASS z_aspec_contains_matcher IMPLEMENTATION.
         line  = line
         table = table ).
     ENDIF.
-    endmethod.
+  ENDMETHOD.
 ENDCLASS.

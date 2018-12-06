@@ -5,7 +5,13 @@ CLASS z_aspec_equal_matcher DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    METHODS match REDEFINITION.
+    METHODS:
+      match
+        IMPORTING
+          actual   TYPE any
+          expected TYPE any
+          quit     TYPE aunit_flowctrl
+          message  TYPE csequence.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.

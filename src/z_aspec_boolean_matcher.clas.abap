@@ -5,7 +5,9 @@ CLASS z_aspec_boolean_matcher DEFINITION
   CREATE PUBLIC .
 
   PUBLIC SECTION.
-    METHODS match REDEFINITION.
+    METHODS match
+      IMPORTING
+        actual TYPE any.
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
